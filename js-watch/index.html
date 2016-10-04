@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>New photos</title>
+
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	// load up socket.io
+	  var socket = io('http://localhost:8080');
+
+	  // return test data to ensure it works
+	  socket.on('news', function (data) {
+	    console.log(data);
+	    socket.emit('my other event', { my: 'data' });
+	  });
+
+	  // when a file event is received, add it
+	  socket.on('file', function(data) {
+	  	console.log(data);
+	  	addFile(data);
+	  });
+
+	  // add the new image at the beginning of the list
+	  function addFile(path) {
+	  	$('.files').prepend($('<li><img src="' + path + '" /></li>'));
+	  }
+	</script>
+
+	<style>
+
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	ul, li {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+
+	li {
+		float: left;
+		margin: 0;
+		padding: 15px 0 0 15px;
+
+		animation-name: added;
+		animation-duration: 3s;
+	}
+
+	img {
+		width: 400px;
+	}
+
+	@keyframes added {
+	    from {
+	    	opacity: 0;
+	    	margin-top: -400px;
+	    }
+	    to {
+	    	opacity: 1;
+	    	margin-top: 0;
+	    }
+	}
+	</style>
+
+</head>
+<body>
+
+	<ul class="files">
+		<li><img src="" alt=""></li>
+	</ul>
+
+</body>
+</html>
